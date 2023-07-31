@@ -1,6 +1,7 @@
 from tkinter import*
 from tkinter import ttk
 
+#biblioteca para tratar imagens que usei para tratar os icones
 from PIL import ImageTk, Image
 
 
@@ -13,7 +14,7 @@ cor3 = '#b8d5d7' #azul claro ; blue
 
 # config da janela
 janela = Tk()
-janela.title('Calculadora de Medidas')
+janela.title('Me de Pai')
 janela.geometry('650x260')
 janela.configure(bg=cor1)
 
@@ -29,14 +30,14 @@ frame_esquerda.place(x=2, y=53)
 frame_direita = Frame(janela, width=198, height=260, bg=cor2, pady=0, padx=3, relief='flat')
 frame_direita.place(x=454, y=2)
 
-#---------------------------------------estilo das janela -------------------
+#---------------------------------------estilo das janela -----------------------------
 
 estilo = ttk.Style(janela)
 estilo.theme_use("clam")
 
 #---------------------------------------Confirgurando Frame cima -------------------
 
-l_app_nome = Label(frame_cima, text= 'Calculadora de Unidades de Medidas ', height=1, padx=0,
+l_app_nome = Label(frame_cima, text= 'Conversor de Unidades de Medidas ', height=1, padx=0,
                    relief='flat', anchor='center', font=('Ivy 15 bold'), bg=cor2, fg=cor3)
 l_app_nome.place(x=50, y=10)
 
@@ -69,6 +70,7 @@ c_para.place(x=133, y=70)
 
 #---------------------------------------Confirgurando Funcionalidades -------------------
 
+#dicionario para formulas das unidades que vamos utilizar
 unidades = {'Massa': [{'mg':0.001}, {'g': 1}, {'kg':1000}, {'t':1000000}],
             'Tempo': [{'ms': 0.001}, {'s': 1}, {'min': 60}, {'h': 3600}, {'d':86400}],
             'Comprimento': [{'mm':0.001},{'cm':0.01},{'m': 1},{'km':1000}],
@@ -79,6 +81,8 @@ unidades = {'Massa': [{'mg':0.001}, {'g': 1}, {'kg':1000}, {'t':1000000}],
             'Energia': [{'km/s': 1}],
             'Pressão':[{'km/s': 1}]
             }
+
+#percorrer o dicionario e enviar para o junbbox
 
 def monstrar_menu(i):
     
@@ -100,10 +104,60 @@ def monstrar_menu(i):
     l_unidade_nome['text'] = i
 
 
+    def calcular():
+        
+        # Obtendo as unidades
+        a = c_de.get()
+        b = c_para.get()
+
+        # Obtendo o numero
+        numero_para_converter = float(e_numero.get())
+        
+        '''criar uma forma de calculo individual para cada unidade de medida pois esse abaixo não       
+           não vai servir para codigo completo.           
+        '''
+                     
+        if unidade_para(a) <= unidade_de.index(b):
+            #verificando a posição das unidades para obter o valor de distancia
+            distancia = unidade_para.index(b) - unidade_de.index(a)
+            resultado = numero_para_converter * (10**distancia)
+        
+        #**********************************************************************************
+        
+                
+        print(a, b, numero_para_converter)
+        
+        
 
 
 
-#---------------------------------------Configurando Frame Esquerda -------------------
+    # criando label, botão, entrada
+    # O espaço onde colocamos os valores, apertamos em calcular e o resultado
+    
+    l_info = Label(frame_direita, text = 'Digite o numero', width = 16, height=2, padx=3, 
+                       pady=3, relief='flat', anchor='center', font=('Ivy 10 bold'), 
+                       bg=cor2, fg=cor3)
+    l_info.place(x=25, y=110)
+    
+    e_numero = Entry(frame_direita, width=10, font=('Ivy 14 bold'), justify='center', 
+                     relief=SOLID,)
+    e_numero.place(x=5, y=150)
+    
+    b_calcular = Button(frame_direita, text= 'Calcular', command=calcular, width=7, height=0,
+                        relief='raised', overrelief='ridge', anchor='nw',
+                        font=('Ivy 9 bold'), bg=cor3, fg=cor2)
+    b_calcular.place(x=120, y=150)
+
+    l_resultado = Label(frame_direita, text = '000000', width = 13, height=1,
+                        relief='groove', anchor='center', font=('Ivy 12 bold'), 
+                        bg=cor2, fg=cor3)
+    l_resultado.place(x=30, y=190)
+    
+    
+    #criar uma logica para o usuario não inserir texto apenas numero na entrada    
+    
+
+#---------------------------------------Configurando Frame Esquerda -----------------------
 
 #Botão do Massa
 img_0 = Image.open('Icons/weight.png')
@@ -186,6 +240,9 @@ b_0 = Button(frame_esquerda, command=lambda:monstrar_menu('Pressão'), text= 'Pr
              image=img_8, compound=LEFT, width=130, height=50 , relief='flat',
              overrelief='solid', anchor='nw', font=('Ivy 10 bold'), bg=cor3, fg=cor2)
 b_0.grid(row=2, column=2, sticky=NSEW, pady=5, padx=5)
+
+
+
 
 
 
